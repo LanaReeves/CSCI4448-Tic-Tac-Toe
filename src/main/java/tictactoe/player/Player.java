@@ -1,0 +1,25 @@
+package tictactoe.player;
+
+import tictactoe.Marker;
+import tictactoe.board.Board;
+import tictactoe.board.Cell;
+
+abstract public class Player {
+    private final String name;
+    private final Marker marker;
+
+    public Player(String name, Marker marker) {
+        this.name = name;
+        this.marker = marker;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Marker getMarker() {
+        return marker;
+    }
+
+    abstract public Cell move(Board board);
+}
