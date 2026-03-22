@@ -20,5 +20,4 @@ public class BotPlayer extends Player {
         List<Cell> emptyCells = board.getEmptyCells();
         return emptyCells.get(rand.nextInt(emptyCells.size()));
     }
-
 }

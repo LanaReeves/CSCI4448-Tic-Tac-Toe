@@ -9,6 +9,7 @@ public class Board {
     List<Cell[]> board = new ArrayList<>();
     private final int dimension;
     private final CellFactory cellFactory;
+    private Marker markerWon;
 
     public Board(int dimension, CellFactory cellFactory) {
         this.dimension = dimension;
@@ -47,6 +48,102 @@ public class Board {
         return emptyCells;
     }
 
+    public boolean horizontalWin(){
+        for (Cell[] row : board) {
+            Marker marker = row[0].getMarker();
+            if (marker != null) {
+                boolean win = true;
+                for(int col = 1; col < dimension; col++) {
+                    if (row[col].getMarker() != marker) {
+                        win = false;
+                    }
+                }
+                if (win) {
+                    markerWon = marker;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean verticalWin() {
+        for (int col = 0; col < dimension; col++) {
+            Marker marker = board.getFirst()[col].getMarker();
+
+            if (marker != null) {
+                boolean win = true;
+                for (int row = 1; row < dimension; row++) {
+                    if (board.get(row)[col].getMarker() != marker) {
+                        win = false;
+                    }
+                }
+                if (win) {
+                    markerWon = marker;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean diagonalWin() {
+        return (diagonalWinFirst() || diagonalWinSecond());
+    }
+
+
+    private boolean diagonalWinFirst() {
+        boolean win = true;
+        Marker marker = board.getFirst()[0].getMarker();
+        if (marker != null) {
+            for (int i = 1; i < dimension; i++) {
+                if (board.get(i)[i].getMarker() != marker) {
+                    win = false;
+                }
+            }
+            if (win) {
+                markerWon = marker;
+            }
+            return win;
+        }
+        return false;
+    }
+
+    private boolean diagonalWinSecond() {
+        boolean win = true;
+        Marker marker = board.getFirst()[dimension - 1].getMarker();
+
+        if (marker != null) {
+            for (int i = 1; i < dimension; i++) {
+                if (board.get(i)[dimension - 1 - i].getMarker() != marker) {
+                    win = false;
+                }
+            }
+            if (win) {
+                markerWon = marker;
+            }
+            return win;
+        }
+        return false;
+    }
+
+    public boolean isFull() {
+        for (Cell[] row: board) {
+            for(int i = 0; i < dimension; i++) {
+                if (row[i].getMarker() == null){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public Cell getCell(int row, int col) {
+        return board.get(row)[col];
+    }
+
+    public Marker getMarkerWon() {return markerWon;}
+
     @Override
     public String toString() {
         StringBuilder boardString = new StringBuilder();
@@ -54,10 +151,10 @@ public class Board {
             for(int i = 0; i < dimension; i++) {
                 Marker marker = row[i].getMarker();
                 if(marker == null) {
-                    boardString.append("-");
+                    boardString.append("- ");
                 }
                 else {
-                    boardString.append(marker);
+                    boardString.append(marker + " ");
                 }
             }
             boardString.append("\n");
