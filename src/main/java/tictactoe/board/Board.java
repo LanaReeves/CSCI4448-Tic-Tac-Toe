@@ -56,6 +56,7 @@ public class Board {
                 for(int col = 1; col < dimension; col++) {
                     if (row[col].getMarker() != marker) {
                         win = false;
+                        break;
                     }
                 }
                 if (win) {
@@ -76,6 +77,7 @@ public class Board {
                 for (int row = 1; row < dimension; row++) {
                     if (board.get(row)[col].getMarker() != marker) {
                         win = false;
+                        break;
                     }
                 }
                 if (win) {
@@ -99,6 +101,7 @@ public class Board {
             for (int i = 1; i < dimension; i++) {
                 if (board.get(i)[i].getMarker() != marker) {
                     win = false;
+                    break;
                 }
             }
             if (win) {
@@ -117,6 +120,7 @@ public class Board {
             for (int i = 1; i < dimension; i++) {
                 if (board.get(i)[dimension - 1 - i].getMarker() != marker) {
                     win = false;
+                    break;
                 }
             }
             if (win) {
@@ -154,7 +158,7 @@ public class Board {
                     boardString.append("- ");
                 }
                 else {
-                    boardString.append(marker + " ");
+                    boardString.append(marker).append(" ");
                 }
             }
             boardString.append("\n");
