@@ -5,11 +5,10 @@ import tictactoe.board.Board;
 import tictactoe.board.Cell;
 
 abstract public class Player {
-    private final String name;
+    protected String name;
     private final Marker marker;
 
-    public Player(String name, Marker marker) {
-        this.name = name;
+    public Player(Marker marker) {
         this.marker = marker;
     }
 
@@ -21,5 +20,11 @@ abstract public class Player {
         return marker;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     abstract public Cell move(Board board);
+
+    public boolean isHuman() { return false; }
 }

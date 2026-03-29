@@ -1,24 +1,24 @@
 package tictactoe;
 
 import org.junit.jupiter.api.Test;
-import tictactoe.board.BoardFactory;
 import tictactoe.player.PlayerFactory;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static tictactoe.Marker.X;
 
 public class TicTacToeTest {
-    BoardFactory boardFactory = new BoardFactory();
     PlayerFactory playerFactory = new PlayerFactory();
 
     @Test
     public void testTwoBots() {
-        TicTacToe game = TicTacToe.getNewBuilder(boardFactory, playerFactory)
+        ITicTacToe game = TicTacToe.getNewBuilder(playerFactory)
                 .boardSize(3)
                 .firstPlayerBot()
                 .secondPlayerBot().build();
 
-        game.play();
+        while (!game.isOver()) {
+            game.playTurn();
+        }
 
         assertTrue(game.isOver());
     }
@@ -30,13 +30,14 @@ public class TicTacToeTest {
         int ties = 0;
 
         for (int i = 0; i < 100; i++) {
-            TicTacToe game = TicTacToe.getNewBuilder(boardFactory, playerFactory)
+            ITicTacToe game = TicTacToe.getNewBuilder(playerFactory)
                     .boardSize(3)
                     .firstPlayerBot()
                     .secondPlayerBot().build();
 
-            game.play();
-
+            while (!game.isOver()) {
+                game.playTurn();
+            }
             if (game.getWinningPlayer() == null) {
                 ties++;
             } else if (game.getWinningPlayer().getMarker() == X) {

@@ -8,12 +8,10 @@ import java.util.List;
 public class Board {
     List<Cell[]> board = new ArrayList<>();
     private final int dimension;
-    private final CellFactory cellFactory;
     private Marker markerWon;
 
-    public Board(int dimension, CellFactory cellFactory) {
+    public Board(int dimension) {
         this.dimension = dimension;
-        this.cellFactory = cellFactory;
         createBoard();
     }
 
@@ -21,10 +19,15 @@ public class Board {
         for(int row = 0; row < dimension; row++) {
             Cell[] rowCells = new Cell[dimension];
             for(int col = 0; col < dimension; col++) {
-               rowCells[col] = cellFactory.createCell(row,col);
+               rowCells[col] = Board.newCell(row, col);
             }
             board.add(rowCells);
         }
+    }
+
+    private static Cell newCell(int row, int col) {
+        return new Cell(row, col);
+
     }
 
     public List<Cell[]> getBoard() {
@@ -151,9 +154,19 @@ public class Board {
     @Override
     public String toString() {
         StringBuilder boardString = new StringBuilder();
-        for(Cell[] row: board) {
-            for(int i = 0; i < dimension; i++) {
-                Marker marker = row[i].getMarker();
+        boardString.append("  ");
+        for(int i = 0; i < dimension; i++) {
+            boardString.append(i+1).append(" ");
+        }
+
+        boardString.append("\n");
+
+        for(int i = 0; i < dimension; i++) {
+            for(int j = 0; j < dimension; j++) {
+                if (j == 0) {
+                    boardString.append(i+1).append(" ");
+                }
+                Marker marker = board.get(i)[j].getMarker();
                 if(marker == null) {
                     boardString.append("- ");
                 }

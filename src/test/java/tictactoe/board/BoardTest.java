@@ -13,13 +13,12 @@ import static tictactoe.Marker.X;
 
 public class BoardTest {
 
-    BoardFactory boardFactory = new BoardFactory();
     PlayerFactory playerFactory = new PlayerFactory();
 
     @Test
     public void boardCreation() {
         int dimension = 3;
-        Board threeByThree = boardFactory.createBoard(dimension);
+        Board threeByThree = new Board(dimension);
         List<Cell[]> board = threeByThree.getBoard();
 
         assertEquals(dimension, board.size());
@@ -37,7 +36,7 @@ public class BoardTest {
     @Test
     public void updateCellMarkerBot() {
         int dimension = 3;
-        Board threeByThree = boardFactory.createBoard(dimension);
+        Board threeByThree = new Board(dimension);
         Player bot1 = playerFactory.createBot("bot1", X);
 
         Cell cellSelected = bot1.move(threeByThree);
@@ -50,7 +49,7 @@ public class BoardTest {
     @Test
     public void testHorizontalWin() {
         int dimension = 3;
-        Board threeByThree = boardFactory.createBoard(dimension);
+        Board threeByThree = new Board(dimension);
         threeByThree.updateCell(threeByThree.getCell(0,0), X);
         threeByThree.updateCell(threeByThree.getCell(0,1), X);
         threeByThree.updateCell(threeByThree.getCell(0,2), X);
@@ -63,7 +62,7 @@ public class BoardTest {
     @Test
     public void testVerticalWin() {
         int dimension = 3;
-        Board threeByThree = boardFactory.createBoard(dimension);
+        Board threeByThree = new Board(dimension);
         threeByThree.updateCell(threeByThree.getCell(0,2), O);
         threeByThree.updateCell(threeByThree.getCell(1,2), O);
         threeByThree.updateCell(threeByThree.getCell(2,2), O);
@@ -76,7 +75,7 @@ public class BoardTest {
     @Test
     public void testFirstDiagonalWin() {
         int dimension = 3;
-        Board threeByThree = boardFactory.createBoard(dimension);
+        Board threeByThree = new Board(dimension);
         threeByThree.updateCell(threeByThree.getCell(0,0), O);
         threeByThree.updateCell(threeByThree.getCell(1,1), O);
         threeByThree.updateCell(threeByThree.getCell(2,2), O);
@@ -89,7 +88,7 @@ public class BoardTest {
     @Test
     public void testSecondDiagonalWin() {
         int dimension = 3;
-        Board threeByThree = boardFactory.createBoard(dimension);
+        Board threeByThree = new Board(dimension);
         threeByThree.updateCell(threeByThree.getCell(0,2), X);
         threeByThree.updateCell(threeByThree.getCell(1,1), X);
         threeByThree.updateCell(threeByThree.getCell(2,0), X);
@@ -102,7 +101,7 @@ public class BoardTest {
     @Test
     public void testBoardFull() {
         int dimension = 2;
-        Board board = boardFactory.createBoard(dimension);
+        Board board = new Board(dimension);
 
         board.updateCell(board.getCell(0,0), X);
         board.updateCell(board.getCell(1,1), X);

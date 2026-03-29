@@ -4,15 +4,28 @@ import tictactoe.Marker;
 import tictactoe.board.Board;
 import tictactoe.board.Cell;
 
+import java.util.Scanner;
+
 public class HumanPlayer extends Player{
 
-    public HumanPlayer(String name, Marker marker) {
-        super(name, marker);
+    private final Scanner scanner;
+
+    public HumanPlayer(Marker marker, Scanner scanner) {
+        super(marker);
+        this.scanner = scanner;
     }
 
     @Override
     public Cell move(Board board) {
-        return null;
+        int row = scanner.nextInt();
+        int col = scanner.nextInt();
+
+        return board.getCell(row-1, col-1);
+    }
+
+    @Override
+    public boolean isHuman() {
+        return true;
     }
 
 }

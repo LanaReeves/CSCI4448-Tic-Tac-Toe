@@ -12,7 +12,8 @@ public class BotPlayer extends Player {
 
 
     public BotPlayer(String name, Marker marker) {
-        super(name, marker);
+        super(marker);
+        this.name = name;
     }
 
     @Override
