@@ -69,6 +69,11 @@ public class TicTacToe implements ITicTacToe {
     }
 
     @Override
+    public String getWinningPlayersName() {
+        return winningPlayer.getName();
+    }
+
+    @Override
     public boolean currentPlayerIsHuman() {
         return currentPlayer.isHuman();
     }

@@ -13,6 +13,7 @@ public interface ITicTacToe {
     boolean player1IsHuman();
     boolean player2IsHuman();
     Player getWinningPlayer();
+    String getWinningPlayersName();
 
     void enterPlayer1Name(String name);
     void enterPlayer2Name(String name);
