@@ -3,12 +3,15 @@ package tictactoe;
 import org.slf4j.Logger;
 import tictactoe.board.Board;
 import tictactoe.board.Cell;
+import tictactoe.commands.ICommand;
+import tictactoe.commands.MoveCommand;
 import tictactoe.player.Player;
 import tictactoe.player.PlayerFactory;
 import tictactoe.strategy.IWinStrategy;
 import tictactoe.strategy.WinStrategyFactory;
 
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TicTacToe implements ITicTacToe {
     static Logger logger = org.slf4j.LoggerFactory.getLogger(TicTacToe.class);
@@ -21,13 +24,25 @@ public class TicTacToe implements ITicTacToe {
     private Player winningPlayer;
     private IWinStrategy winStrategy;
     private boolean winOccurred = false;
+    List<ICommand> moveCommands = new ArrayList<>();
 
 
     private TicTacToe() {}
 
-    public void playTurn(){
+    public void pickMove() {
         Cell selectedCell = currentPlayer.move(board);
-        boolean updated = board.updateCell(selectedCell, currentPlayer.getMarker());
+        playTurn(selectedCell);
+    }
+
+    public void pickMove(int row, int col) {
+        Cell selectedCell = currentPlayer.move(board, row, col);
+        playTurn(selectedCell);
+    }
+
+    private void playTurn(Cell selectedCell){
+        ICommand moveCommand = new MoveCommand(board, selectedCell, currentPlayer);
+        boolean updated = moveCommand.execute();
+        moveCommands.add(moveCommand);
 
         if (updated) {
             if (win()) {
@@ -35,6 +50,24 @@ public class TicTacToe implements ITicTacToe {
             }
             updatePlayer();
         }
+    }
+
+
+    public void undoMove() {
+        if (!moveCommands.isEmpty()) {
+            undoCommand();
+
+            if(!currentPlayerIsHuman() && !moveCommands.isEmpty()) {
+                undoCommand();
+            }
+        }
+    }
+
+    private void undoCommand() {
+        ICommand move = moveCommands.getLast();
+        move.undo();
+        moveCommands.removeLast();
+        currentPlayer = move.getPlayer();
     }
 
     private void updatePlayer() {
@@ -133,13 +166,13 @@ public class TicTacToe implements ITicTacToe {
             return this;
         }
 
-        public Builder firstPlayerHuman(Scanner scanner) {
-            game.player1 = playerFactory.createHumanPlayer(PLAYER_1_MARKER, scanner);
+        public Builder firstPlayerHuman() {
+            game.player1 = playerFactory.createHumanPlayer(PLAYER_1_MARKER);
             return this;
         }
 
-        public Builder secondPlayerHuman(Scanner scanner) {
-            game.player2 = playerFactory.createHumanPlayer( PLAYER_2_MARKER, scanner);
+        public Builder secondPlayerHuman() {
+            game.player2 = playerFactory.createHumanPlayer( PLAYER_2_MARKER);
             return this;
         }
 

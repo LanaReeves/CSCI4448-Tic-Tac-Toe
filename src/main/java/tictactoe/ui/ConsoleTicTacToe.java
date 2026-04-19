@@ -27,13 +27,23 @@ public class ConsoleTicTacToe {
             System.out.println(ticTacToe.getBoard());
 
             if (ticTacToe.currentPlayerIsHuman()) {
-                System.out.print("Enter coordinate: ");
+                System.out.print("Enter coordinate or 'u' for undo: ");
+                String input = scanner.next();
+
+                if (input.equals("u")) {
+                    ticTacToe.undoMove();
+                }
+                else {
+                   int row = Integer.parseInt(input);
+                   int col = scanner.nextInt();
+
+                   ticTacToe.pickMove(row, col);
+                }
             }
             else {
                 System.out.println("Bot is playing");
+                ticTacToe.pickMove();
             }
-
-            ticTacToe.playTurn();
         }
 
         System.out.println(ticTacToe.getBoard());
@@ -43,7 +53,7 @@ public class ConsoleTicTacToe {
         boolean validGameInput;
         boolean validWinInput;
 
-        TicTacToe.Builder builder = getNewBuilder(playerFactory).firstPlayerHuman(scanner).boardSize(3);
+        TicTacToe.Builder builder = getNewBuilder(playerFactory).firstPlayerHuman().boardSize(3);
 
         do {
             System.out.print("Please select a opponent (1 = Bot, 2 = Human Player): ");
@@ -53,7 +63,7 @@ public class ConsoleTicTacToe {
                 builder = builder.secondPlayerBot();
                 validGameInput = true;
             } else if (gameType == 2) {
-                builder = builder.secondPlayerHuman(scanner);
+                builder = builder.secondPlayerHuman();
                 validGameInput = true;
             } else {
                 System.out.println("Wrong input.");

@@ -24,7 +24,13 @@ abstract public class Player {
         this.name = name;
     }
 
-    abstract public Cell move(Board board);
+    public Cell move(Board board) {
+        return null;
+    }
+    public Cell move(Board board, int row, int col) {
+        return board.getCell(row-1, col-1);
+    }
+
 
     public boolean isHuman() { return false; }
 }

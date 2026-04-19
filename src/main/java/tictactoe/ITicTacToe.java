@@ -5,7 +5,8 @@ import tictactoe.player.Player;
 
 
 public interface ITicTacToe {
-    void playTurn();
+    void pickMove();
+    void pickMove(int row, int col);
     boolean isOver();
 
     Board getBoard();
@@ -18,7 +19,5 @@ public interface ITicTacToe {
 
     void enterPlayer1Name(String name);
     void enterPlayer2Name(String name);
-
-
-
+    void undoMove();
 }

@@ -16,7 +16,7 @@ public class TicTacToeTest {
                 .secondPlayerBot().standardWin().build();
 
         while (!game.isOver()) {
-            game.playTurn();
+            game.pickMove();
         }
 
         assertTrue(game.isOver());
@@ -36,7 +36,7 @@ public class TicTacToeTest {
                     .standardWin().build();
 
             while (!game.isOver()) {
-                game.playTurn();
+                game.pickMove();
             }
             if (game.getWinningPlayer() == null) {
                 ties++;
