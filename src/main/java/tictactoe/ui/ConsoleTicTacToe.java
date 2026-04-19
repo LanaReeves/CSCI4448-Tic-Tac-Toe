@@ -1,6 +1,7 @@
 package tictactoe.ui;
 
 import tictactoe.ITicTacToe;
+import tictactoe.TicTacToe;
 import tictactoe.player.PlayerFactory;
 
 import java.util.Scanner;
@@ -40,22 +41,53 @@ public class ConsoleTicTacToe {
 
     private void setUpGame() {
         boolean validGameInput;
+        boolean validWinInput;
+
+        TicTacToe.Builder builder = getNewBuilder(playerFactory).firstPlayerHuman(scanner).boardSize(3);
 
         do {
             System.out.print("Please select a opponent (1 = Bot, 2 = Human Player): ");
             int gameType = scanner.nextInt();
 
             if (gameType == 1) {
-                this.ticTacToe = getNewBuilder(playerFactory).firstPlayerHuman(scanner).secondPlayerBot().boardSize(3).build();
+                builder = builder.secondPlayerBot();
                 validGameInput = true;
             } else if (gameType == 2) {
-                this.ticTacToe = getNewBuilder(playerFactory).firstPlayerHuman(scanner).secondPlayerHuman(scanner).boardSize(3).build();
+                builder = builder.secondPlayerHuman(scanner);
                 validGameInput = true;
             } else {
                 System.out.println("Wrong input.");
                 validGameInput = false;
             }
         } while(!validGameInput);
+
+        do {
+            System.out.print("Please select a win option (1 = Standard, 2 = Vertical, 3 = Diagonal, 4 = Horizontal): ");
+            int winType = scanner.nextInt();
+
+            if (winType == 1) {
+                builder = builder.standardWin();
+                validWinInput = true;
+            } else if (winType == 2) {
+                builder = builder.verticalWin();
+                validWinInput = true;
+            }
+            else if (winType == 3) {
+                builder = builder.diagonalWin();
+                validWinInput = true;
+            }
+            else if (winType == 4) {
+                builder = builder.horizontalWin();
+                validWinInput = true;
+            }
+            else {
+                System.out.println("Wrong input.");
+                validWinInput = false;
+            }
+        } while(!validWinInput);
+
+
+        this.ticTacToe = builder.build();
     }
 
     private void setUpNames() {

@@ -2,6 +2,7 @@ package tictactoe.ui;
 
 import tictactoe.ITicTacToe;
 import tictactoe.Marker;
+import tictactoe.TicTacToe;
 import tictactoe.board.Board;
 import tictactoe.board.Cell;
 import tictactoe.player.PlayerFactory;
@@ -11,7 +12,6 @@ import java.awt.*;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintWriter;
-import java.util.List;
 import java.util.Scanner;
 
 import static tictactoe.TicTacToe.getNewBuilder;
@@ -40,14 +40,38 @@ public class SwingTicTacToe {
 
         if (choice == JOptionPane.CLOSED_OPTION) System.exit(0);
 
+        Object[] winOptions = {"Standard", "Vertical", "Diagonal", "Horizontal"};
+        int winChoice = JOptionPane.showOptionDialog(null, "Choose your win strategy:", "Tic Tac Toe",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, winOptions, winOptions[0]);
+
+        if (winChoice == JOptionPane.CLOSED_OPTION) System.exit(0);
+
         try {
             PipedOutputStream pipedOut = new PipedOutputStream();
             coordinateWriter = new PrintWriter(pipedOut, true);
             Scanner scanner = new Scanner(new PipedInputStream(pipedOut));
 
-            ticTacToe = choice == 0
-                    ? getNewBuilder(playerFactory).firstPlayerHuman(scanner).secondPlayerBot().boardSize(BOARD_SIZE).build()
-                    : getNewBuilder(playerFactory).firstPlayerHuman(scanner).secondPlayerHuman(scanner).boardSize(BOARD_SIZE).build();
+            TicTacToe.Builder builder = getNewBuilder(playerFactory).firstPlayerHuman(scanner).boardSize(3);
+
+
+            if (choice == 0) {
+                builder = builder.secondPlayerBot();
+            } else {
+                builder = builder.secondPlayerHuman(scanner);
+            }
+
+            if (winChoice == 0) {
+                builder = builder.standardWin();
+            } else if (winChoice == 1) {
+                builder = builder.verticalWin();
+            } else if (winChoice == 2) {
+                builder = builder.diagonalWin();
+            } else if (winChoice == 3) {
+                builder = builder.horizontalWin();
+            }
+
+            ticTacToe = builder.build();
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -149,10 +173,10 @@ public class SwingTicTacToe {
     //prints board
     private void refreshBoard() {
         Board board = ticTacToe.getBoard();
-        List<Cell[]> rows = board.getBoard();
+        Cell[][] rows = board.getBoard();
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
-                Marker marker = rows.get(row)[col].getMarker();
+                Marker marker = rows[row][col].getMarker();
                 JButton cell = cells[row][col];
                 if (marker == null) {
                     cell.setText("");
@@ -168,8 +192,13 @@ public class SwingTicTacToe {
 
     private void updateStatus() {
         if (ticTacToe.isOver()) {
-            String winner = ticTacToe.getWinningPlayersName();
-            statusLabel.setText(winner == null ? "It's a draw!" : winner + " wins!");
+            if (ticTacToe.getWinningPlayer() != null) {
+                String winner = ticTacToe.getWinningPlayersName();
+                statusLabel.setText(winner + " wins!");
+            }
+            else {
+                statusLabel.setText("It's a draw!");
+            }
             setBoardEnabled(false);
         } else {
             statusLabel.setText("Your turn!");

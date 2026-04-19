@@ -3,6 +3,7 @@ package tictactoe;
 import tictactoe.board.Board;
 import tictactoe.player.Player;
 
+
 public interface ITicTacToe {
     void playTurn();
     boolean isOver();
@@ -17,5 +18,7 @@ public interface ITicTacToe {
 
     void enterPlayer1Name(String name);
     void enterPlayer2Name(String name);
+
+
 
 }

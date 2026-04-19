@@ -5,6 +5,8 @@ import tictactoe.board.Board;
 import tictactoe.board.Cell;
 import tictactoe.player.Player;
 import tictactoe.player.PlayerFactory;
+import tictactoe.strategy.IWinStrategy;
+import tictactoe.strategy.WinStrategyFactory;
 
 import java.util.Scanner;
 
@@ -17,14 +19,22 @@ public class TicTacToe implements ITicTacToe {
     private static final Marker PLAYER_2_MARKER = Marker.O;
     private Player currentPlayer;
     private Player winningPlayer;
+    private IWinStrategy winStrategy;
+    private boolean winOccurred = false;
+
 
     private TicTacToe() {}
 
     public void playTurn(){
         Cell selectedCell = currentPlayer.move(board);
-        board.updateCell(selectedCell, currentPlayer.getMarker());
+        boolean updated = board.updateCell(selectedCell, currentPlayer.getMarker());
 
-        updatePlayer();
+        if (updated) {
+            if (win()) {
+                winOccurred = true;
+            }
+            updatePlayer();
+        }
     }
 
     private void updatePlayer() {
@@ -38,17 +48,12 @@ public class TicTacToe implements ITicTacToe {
 
     @Override
     public boolean isOver() {
-        return win() || tie();
+        return winOccurred|| tie();
     }
 
     private boolean win() {
-        if (board.diagonalWin() || board.horizontalWin() || board.verticalWin()) {
-            if (board.getMarkerWon() == PLAYER_1_MARKER) {
-                winningPlayer = player1;
-            }
-            else {
-                winningPlayer = player2;
-            }
+        if (winStrategy.checkWin(board)) {
+            winningPlayer = currentPlayer;
             logger.info("{} has won!", winningPlayer.getName());
             return true;
         }
@@ -103,14 +108,14 @@ public class TicTacToe implements ITicTacToe {
         return board;
     }
 
-
-    public static Builder getNewBuilder(PlayerFactory playerFactory) {
-        return new Builder(playerFactory);
+    public static TicTacToe.Builder getNewBuilder(PlayerFactory playerFactory) {
+        return new TicTacToe.Builder(playerFactory);
     }
 
-    public static class Builder {
+    public static class Builder  {
         final TicTacToe game = new TicTacToe();
         private final PlayerFactory playerFactory;
+        static private final WinStrategyFactory winStrategyFactory = new WinStrategyFactory();
 
         private Builder(PlayerFactory playerFactory) {
             this.playerFactory = playerFactory;
@@ -138,14 +143,34 @@ public class TicTacToe implements ITicTacToe {
             return this;
         }
 
+        public Builder standardWin() {
+            game.winStrategy = winStrategyFactory.newStandardWinStrategy();
+            return this;
+        }
+
+        public Builder verticalWin() {
+            game.winStrategy = winStrategyFactory.newVerticalWinStrategy();
+            return this;
+        }
+
+        public Builder horizontalWin() {
+            game.winStrategy = winStrategyFactory.newHorizontalWinStrategy();
+            return this;
+        }
+
+        public Builder diagonalWin() {
+            game.winStrategy = winStrategyFactory.newDiagonalWinStrategy();
+            return this;
+        }
+
         public Builder boardSize(int size) {
             game.board = newBoard(size);
             return this;
         }
-
         private static Board newBoard(int size) {
             return new Board(size);
         }
+
 
         public TicTacToe build() {
             game.currentPlayer = game.player1;
