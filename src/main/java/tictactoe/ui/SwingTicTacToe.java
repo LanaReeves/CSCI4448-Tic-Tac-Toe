@@ -109,11 +109,17 @@ public class SwingTicTacToe {
         frame.add(boardPanel, BorderLayout.CENTER);
 
         JButton restartButton = new JButton("Restart");
+        restartButton.setFocusable(false);
         restartButton.addActionListener(e -> restart());
+
+        JButton undoButton = new JButton("Undo");
+        undoButton.setFocusable(false);
+        undoButton.addActionListener(e -> onUndo());
+
         JPanel bottom = new JPanel();
+        bottom.add(undoButton);
         bottom.add(restartButton);
         frame.add(bottom, BorderLayout.SOUTH);
-
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -126,7 +132,7 @@ public class SwingTicTacToe {
         setBoardEnabled(false);
         new SwingWorker<Void, Void>() {
             @Override protected Void doInBackground() {
-                ticTacToe.pickMove(row, col);
+                ticTacToe.pickMove(row + 1, col + 1);
                 return null;
             }
 
@@ -199,6 +205,22 @@ public class SwingTicTacToe {
         for (JButton[] row : cells)
             for (JButton cell : row)
                 cell.setEnabled(enabled);
+    }
+
+    private void onUndo() {
+        if (!ticTacToe.canUndo()) return;
+        setBoardEnabled(false);
+        new SwingWorker<Void, Void>() {
+            @Override protected Void doInBackground() {
+                ticTacToe.undoMove();
+                return null;
+            }
+            @Override protected void done() {
+                refreshBoard();
+                setBoardEnabled(true);
+                updateStatus();
+            }
+        }.execute();
     }
 
     private void restart() { frame.dispose(); showSetupDialog(); }

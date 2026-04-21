@@ -8,6 +8,7 @@ public interface ITicTacToe {
     void pickMove();
     void pickMove(int row, int col);
     boolean isOver();
+    boolean canUndo();
 
     Board getBoard();
 

@@ -63,6 +63,11 @@ public class TicTacToe implements ITicTacToe {
         }
     }
 
+    public boolean canUndo() {
+        return !moveCommands.isEmpty();
+    }
+
+
     private void undoCommand() {
         ICommand move = moveCommands.getLast();
         move.undo();
