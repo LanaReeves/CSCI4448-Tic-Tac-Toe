@@ -71,6 +71,10 @@ public class ConsoleTicTacToe {
             }
         } while(!validGameInput);
 
+        System.out.print("Please input a number for the board size: ");
+        int boardSize = scanner.nextInt();
+        builder.boardSize(boardSize);
+
         do {
             System.out.print("Please select a win option (1 = Standard, 2 = Vertical, 3 = Diagonal, 4 = Horizontal): ");
             int winType = scanner.nextInt();

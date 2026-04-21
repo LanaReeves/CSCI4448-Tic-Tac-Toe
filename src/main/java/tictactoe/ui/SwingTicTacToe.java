@@ -22,7 +22,7 @@ public class SwingTicTacToe {
     private JLabel statusLabel;
 
     private static final PlayerFactory playerFactory = new PlayerFactory();
-    private static final int BOARD_SIZE = 3;
+    private int boardSize;
 
     public SwingTicTacToe() {
         showSetupDialog();
@@ -33,6 +33,16 @@ public class SwingTicTacToe {
         int choice = JOptionPane.showOptionDialog(null, "Choose your opponent:", "Tic Tac Toe",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
+        do {
+            String sizeInput = JOptionPane.showInputDialog(null, "Enter board size (3 or more):", "Tic Tac Toe", JOptionPane.PLAIN_MESSAGE);
+            if (sizeInput == null) System.exit(0);
+            try {
+                boardSize = Integer.parseInt(sizeInput.trim());
+            } catch (NumberFormatException e) {
+                boardSize = 0;
+            }
+        } while (boardSize < 3);
+
         if (choice == JOptionPane.CLOSED_OPTION) System.exit(0);
 
         Object[] winOptions = {"Standard", "Vertical", "Diagonal", "Horizontal"};
@@ -42,7 +52,7 @@ public class SwingTicTacToe {
         if (winChoice == JOptionPane.CLOSED_OPTION) System.exit(0);
 
         try {
-            TicTacToe.Builder builder = getNewBuilder(playerFactory).firstPlayerHuman().boardSize(3);
+            TicTacToe.Builder builder = getNewBuilder(playerFactory).firstPlayerHuman().boardSize(boardSize);
 
 
             if (choice == 0) {
@@ -89,11 +99,11 @@ public class SwingTicTacToe {
         statusLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
         frame.add(statusLabel, BorderLayout.NORTH);
 
-        JPanel boardPanel = new JPanel(new GridLayout(BOARD_SIZE, BOARD_SIZE, 6, 6));
-        cells = new JButton[BOARD_SIZE][BOARD_SIZE];
+        JPanel boardPanel = new JPanel(new GridLayout(boardSize, boardSize, 6, 6));
+        cells = new JButton[boardSize][boardSize];
 
-        for (int row = 0; row < BOARD_SIZE; row++) {
-            for (int col = 0; col < BOARD_SIZE; col++) {
+        for (int row = 0; row < boardSize; row++) {
+            for (int col = 0; col < boardSize; col++) {
                 JButton cell = new JButton();
                 cell.setFont(new Font("SansSerif", Font.BOLD, 40));
                 cell.setFocusPainted(false);
@@ -169,8 +179,8 @@ public class SwingTicTacToe {
     private void refreshBoard() {
         Board board = ticTacToe.getBoard();
         Cell[][] rows = board.getBoard();
-        for (int row = 0; row < BOARD_SIZE; row++) {
-            for (int col = 0; col < BOARD_SIZE; col++) {
+        for (int row = 0; row < boardSize; row++) {
+            for (int col = 0; col < boardSize; col++) {
                 Marker marker = rows[row][col].getMarker();
                 JButton cell = cells[row][col];
                 if (marker == null) {
