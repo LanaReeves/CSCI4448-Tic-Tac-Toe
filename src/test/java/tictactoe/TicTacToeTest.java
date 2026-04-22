@@ -76,54 +76,39 @@ public class TicTacToeTest {
 
 
     @Test
-    public void testHorizontalWin() {
-//        int dimension = 3;
-//        Board threeByThree = new Board(dimension);
-//        threeByThree.updateCell(threeByThree.getCell(0,0), X);
-//        threeByThree.updateCell(threeByThree.getCell(0,1), X);
-//        threeByThree.updateCell(threeByThree.getCell(0,2), X);
-//
-//        assertTrue(threeByThree.horizontalWin());
-//        assertEquals(X, threeByThree.getMarkerWon());
-//        System.out.println(threeByThree);
+    void testHumanPlayersInGame() {
+        ITicTacToe game = TicTacToe.getNewBuilder(playerFactory)
+                .boardSize(3)
+                .firstPlayerHuman()
+                .secondPlayerHuman().standardWin().build();
+
+        game.enterPlayer1Name("Sam");
+        game.enterPlayer2Name("Lana");
+
+        assertTrue(game.player1IsHuman());
+        assertTrue(game.player2IsHuman());
     }
 
     @Test
-    public void testVerticalWin() {
-//        int dimension = 3;
-//        Board threeByThree = new Board(dimension);
-//        threeByThree.updateCell(threeByThree.getCell(0,2), O);
-//        threeByThree.updateCell(threeByThree.getCell(1,2), O);
-//        threeByThree.updateCell(threeByThree.getCell(2,2), O);
-//
-//        assertTrue(threeByThree.verticalWin());
-//        assertEquals(O, threeByThree.getMarkerWon());
-//        System.out.println(threeByThree);
-    }
+    void testWinningPlayer() {
+        ITicTacToe game = TicTacToe.getNewBuilder(playerFactory)
+                .boardSize(3)
+                .firstPlayerHuman()
+                .secondPlayerHuman().standardWin().build();
 
-    @Test
-    public void testFirstDiagonalWin() {
-//        int dimension = 3;
-//        Board threeByThree = new Board(dimension);
-//        threeByThree.updateCell(threeByThree.getCell(0,0), O);
-//        threeByThree.updateCell(threeByThree.getCell(1,1), O);
-//        threeByThree.updateCell(threeByThree.getCell(2,2), O);
-//
-//        assertTrue(threeByThree.diagonalWin());
-//        assertEquals(O, threeByThree.getMarkerWon());
-//        System.out.println(threeByThree);
-    }
+        game.enterPlayer1Name("Sam");
+        // First round moves
+        game.pickMove(1,1);
+        game.pickMove(1,2);
 
-    @Test
-    public void testSecondDiagonalWin() {
-//        int dimension = 3;
-//        Board threeByThree = new Board(dimension);
-//        threeByThree.updateCell(threeByThree.getCell(0,2), X);
-//        threeByThree.updateCell(threeByThree.getCell(1,1), X);
-//        threeByThree.updateCell(threeByThree.getCell(2,0), X);
-//
-//        assertTrue(threeByThree.diagonalWin());
-//        assertEquals(X, threeByThree.getMarkerWon());
-//        System.out.println(threeByThree);
+        // Second round moves
+        game.pickMove(2,2);
+        game.pickMove(1,3);
+
+        // Third round move
+        game.pickMove(3,3);
+
+        assertEquals("Sam", game.getWinningPlayersName());
+        assertTrue(game.isOver());
     }
 }

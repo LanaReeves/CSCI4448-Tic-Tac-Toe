@@ -3,7 +3,7 @@ package tictactoe.strategy;
 public class WinStrategyFactory {
 
     public IWinStrategy newStandardWinStrategy() {
-        return new BaseWinStrategy();
+        return new StandardWinStrategy();
     }
     public IWinStrategy newVerticalWinStrategy() {
         return new VerticalWinStrategy();

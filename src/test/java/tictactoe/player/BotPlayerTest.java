@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import tictactoe.board.Board;
 import tictactoe.board.Cell;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static tictactoe.Marker.X;
 
 public class BotPlayerTest {
@@ -20,6 +20,8 @@ public class BotPlayerTest {
 
         assertTrue((0 <= cellSelected.getX()) && (dimension > cellSelected.getX()));
         assertTrue((0 <= cellSelected.getY()) && (dimension > cellSelected.getY()));
+        assertFalse(bot1.isHuman());
     }
+
 
 }

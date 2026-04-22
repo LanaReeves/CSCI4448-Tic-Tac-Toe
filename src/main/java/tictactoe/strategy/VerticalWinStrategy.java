@@ -2,7 +2,7 @@ package tictactoe.strategy;
 
 import tictactoe.board.Board;
 
-public class VerticalWinStrategy extends BaseWinStrategy {
+public class VerticalWinStrategy extends StandardWinStrategy {
 
     @Override
     public boolean checkWin(Board board) {

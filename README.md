@@ -16,8 +16,5 @@
 - Builder Pattern:
   - Is used to create a TicTacToe game instance. 
   - It allows step by step creation of the game with different types of players (Bot vs. Human) and setting the board size without the need for many/large constructors.
-- Observer Pattern:
-  - This will be used to notify the UI of any updates that happen during the game. 
-  - The TicTacToe class will be observable and contain a list of observers. When a change is made in the game, the UI will be notified, so it can automatically update.
-- Singleton Pattern:
-  - We will create a single EventBus, and this will be used as a middle man between the game logic and the UI, so the UI does not have direct access to the game, and all components will be able to interact with the one instance of EventBus.
+- Strategy Pattern
+- Command Pattern
