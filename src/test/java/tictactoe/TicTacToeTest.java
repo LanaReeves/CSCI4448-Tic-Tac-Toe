@@ -1,7 +1,12 @@
 package tictactoe;
 
 import org.junit.jupiter.api.Test;
+import tictactoe.board.Cell;
 import tictactoe.player.PlayerFactory;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static tictactoe.Marker.X;
 
@@ -50,6 +55,23 @@ public class TicTacToeTest {
         System.out.println("Ties: " + ties);
         System.out.println("Player 1 wins: " + player1Wins);
         System.out.println("Player 2 wins: " + player2Wins);
+    }
+
+    @Test
+    public void testUndo() {
+        ITicTacToe game = TicTacToe.getNewBuilder(playerFactory)
+                .boardSize(3)
+                .firstPlayerHuman()
+                .secondPlayerHuman().standardWin().build();
+
+       game.pickMove(1,1);
+
+       assertTrue(game.canUndo());
+
+       game.undoMove();
+
+       List<Cell> emptyCells = game.getBoard().getEmptyCells();
+       assertEquals(game.getBoard().getDimension() * game.getBoard().getDimension(), emptyCells.size());
     }
 
 
