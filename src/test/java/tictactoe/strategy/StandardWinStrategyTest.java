@@ -23,10 +23,10 @@ public class StandardWinStrategyTest {
 
         // Second round moves
         game.pickMove(2,2);
-        game.pickMove(1,3);
+        game.pickMove(1,0);
 
         // Third round move
-        game.pickMove(3,3);
+        game.pickMove(0,0);
 
         assertTrue(game.isOver());
     }
@@ -40,14 +40,14 @@ public class StandardWinStrategyTest {
 
         // First round moves
         game.pickMove(1,1);
-        game.pickMove(3,3);
+        game.pickMove(0,0);
 
         // Second round moves
         game.pickMove(1,2);
         game.pickMove(2,2);
 
         // Third round move
-        game.pickMove(1,3);
+        game.pickMove(1,0);
 
         assertTrue(game.isOver());
     }
@@ -65,10 +65,10 @@ public class StandardWinStrategyTest {
 
         // Second round moves
         game.pickMove(2,1);
-        game.pickMove(1,3);
+        game.pickMove(1,0);
 
         // Third round move
-        game.pickMove(3,1);
+        game.pickMove(0,1);
 
         assertTrue(game.isOver());
     }

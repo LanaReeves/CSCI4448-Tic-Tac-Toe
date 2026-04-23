@@ -5,6 +5,7 @@ import tictactoe.board.Board;
 import tictactoe.board.Cell;
 import tictactoe.commands.ICommand;
 import tictactoe.commands.MoveCommand;
+import tictactoe.player.HardBotPlayer;
 import tictactoe.player.Player;
 import tictactoe.player.PlayerFactory;
 import tictactoe.strategy.IWinStrategy;
@@ -159,15 +160,35 @@ public class TicTacToe implements ITicTacToe {
             this.playerFactory = playerFactory;
         }
 
-        public Builder firstPlayerBot() {
+        public Builder firstPlayerHardBot() {
             String player1BotName = "Bot 1";
-            game.player1 = playerFactory.createBot(player1BotName, PLAYER_1_MARKER);
+            if (game.winStrategy != null) {
+                game.player1 = playerFactory.createHardBot(player1BotName, PLAYER_1_MARKER, game.winStrategy);
+            } else {
+                game.player1 = playerFactory.createHardBot(player1BotName, PLAYER_1_MARKER);
+            }
             return this;
         }
 
-        public Builder secondPlayerBot() {
+        public Builder secondPlayerHardBot() {
             String player2BotName = "Bot 2";
-            game.player2 = playerFactory.createBot(player2BotName, PLAYER_2_MARKER);
+            if (game.winStrategy != null) {
+                game.player2 = playerFactory.createHardBot(player2BotName, PLAYER_2_MARKER, game.winStrategy);
+            } else {
+                game.player2 = playerFactory.createHardBot(player2BotName, PLAYER_2_MARKER);
+            }
+            return this;
+        }
+
+        public Builder firstPlayerEasyBot() {
+            String player1BotName = "Bot 1";
+            game.player1 = playerFactory.createEasyBot(player1BotName, PLAYER_1_MARKER);
+            return this;
+        }
+
+        public Builder secondPlayerEasyBot() {
+            String player2BotName = "Bot 2";
+            game.player2 = playerFactory.createEasyBot(player2BotName, PLAYER_2_MARKER);
             return this;
         }
 
@@ -183,22 +204,35 @@ public class TicTacToe implements ITicTacToe {
 
         public Builder standardWin() {
             game.winStrategy = winStrategyFactory.newStandardWinStrategy();
+            updateStrategyHardBot();
             return this;
         }
 
         public Builder verticalWin() {
             game.winStrategy = winStrategyFactory.newVerticalWinStrategy();
+            updateStrategyHardBot();
             return this;
         }
 
         public Builder horizontalWin() {
             game.winStrategy = winStrategyFactory.newHorizontalWinStrategy();
+            updateStrategyHardBot();
             return this;
         }
 
         public Builder diagonalWin() {
             game.winStrategy = winStrategyFactory.newDiagonalWinStrategy();
+            updateStrategyHardBot();
             return this;
+        }
+
+        private void updateStrategyHardBot() {
+            if(game.player1 != null && game.player1 instanceof HardBotPlayer) {
+                ((HardBotPlayer)game.player1).updateStrategy(game.winStrategy);
+            }
+            if(game.player2 != null && game.player2.isHardBot()) {
+                ((HardBotPlayer) game.player2).updateStrategy(game.winStrategy);
+            }
         }
 
         public Builder boardSize(int size) {

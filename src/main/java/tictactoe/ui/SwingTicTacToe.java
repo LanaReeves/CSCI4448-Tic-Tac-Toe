@@ -29,7 +29,7 @@ public class SwingTicTacToe {
     }
 
     private void showSetupDialog() {
-        Object[] options = {"vs Bot", "vs Human"};
+        Object[] options = {"vs Easy Bot", "vs Hard Bot", "vs Human"};
         int choice = JOptionPane.showOptionDialog(null, "Choose your opponent:", "Tic Tac Toe",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
@@ -54,13 +54,6 @@ public class SwingTicTacToe {
         try {
             TicTacToe.Builder builder = getNewBuilder(playerFactory).firstPlayerHuman().boardSize(boardSize);
 
-
-            if (choice == 0) {
-                builder = builder.secondPlayerBot();
-            } else {
-                builder = builder.secondPlayerHuman();
-            }
-
             if (winChoice == 0) {
                 builder = builder.standardWin();
             } else if (winChoice == 1) {
@@ -70,6 +63,15 @@ public class SwingTicTacToe {
             } else if (winChoice == 3) {
                 builder = builder.horizontalWin();
             }
+
+            if (choice == 0) {
+                builder = builder.secondPlayerEasyBot();
+            } else if (choice == 1){
+                builder = builder.secondPlayerHardBot();
+            } else {
+                builder = builder.secondPlayerHuman();
+            }
+
 
             ticTacToe = builder.build();
 
@@ -142,7 +144,7 @@ public class SwingTicTacToe {
         setBoardEnabled(false);
         new SwingWorker<Void, Void>() {
             @Override protected Void doInBackground() {
-                ticTacToe.pickMove(row + 1, col + 1);
+                ticTacToe.pickMove(row, col);
                 return null;
             }
 

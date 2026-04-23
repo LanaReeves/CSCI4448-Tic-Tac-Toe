@@ -37,7 +37,7 @@ public class ConsoleTicTacToe {
                    int row = Integer.parseInt(input);
                    int col = scanner.nextInt();
 
-                   ticTacToe.pickMove(row, col);
+                   ticTacToe.pickMove(row - 1, col - 1);
                 }
             }
             else {
@@ -54,26 +54,6 @@ public class ConsoleTicTacToe {
         boolean validWinInput;
 
         TicTacToe.Builder builder = getNewBuilder(playerFactory).firstPlayerHuman().boardSize(3);
-
-        do {
-            System.out.print("Please select a opponent (1 = Bot, 2 = Human Player): ");
-            int gameType = scanner.nextInt();
-
-            if (gameType == 1) {
-                builder = builder.secondPlayerBot();
-                validGameInput = true;
-            } else if (gameType == 2) {
-                builder = builder.secondPlayerHuman();
-                validGameInput = true;
-            } else {
-                System.out.println("Wrong input.");
-                validGameInput = false;
-            }
-        } while(!validGameInput);
-
-        System.out.print("Please input a number for the board size: ");
-        int boardSize = scanner.nextInt();
-        builder.boardSize(boardSize);
 
         do {
             System.out.print("Please select a win option (1 = Standard, 2 = Vertical, 3 = Diagonal, 4 = Horizontal): ");
@@ -99,6 +79,29 @@ public class ConsoleTicTacToe {
                 validWinInput = false;
             }
         } while(!validWinInput);
+
+        do {
+            System.out.print("Please select a opponent (1 = Easy Bot, 2 = Hard Bot, 3 = Human Player): ");
+            int gameType = scanner.nextInt();
+
+            if (gameType == 1) {
+                builder = builder.secondPlayerEasyBot();
+                validGameInput = true;
+            } else if (gameType == 2) {
+                builder = builder.secondPlayerHardBot();
+                validGameInput = true;
+            } else if (gameType == 3) {
+                builder = builder.secondPlayerHuman();
+                validGameInput = true;
+            } else {
+                System.out.println("Wrong input.");
+                validGameInput = false;
+            }
+        } while(!validGameInput);
+
+        System.out.print("Please input a number for the board size: ");
+        int boardSize = scanner.nextInt();
+        builder.boardSize(boardSize);
 
 
         this.ticTacToe = builder.build();

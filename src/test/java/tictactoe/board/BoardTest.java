@@ -33,7 +33,7 @@ public class BoardTest {
     public void updateCellMarkerBot() {
         int dimension = 3;
         Board threeByThree = new Board(dimension);
-        Player bot1 = playerFactory.createBot("bot1", X);
+        Player bot1 = playerFactory.createEasyBot("bot1", X);
 
         Cell cellSelected = bot1.move(threeByThree);
         threeByThree.updateCell(cellSelected, X);

@@ -26,9 +26,10 @@ abstract public class Player {
 
     abstract public Cell move(Board board);
     public Cell move(Board board, int row, int col) {
-        return board.getCell(row-1, col-1);
+        return board.getCell(row, col);
     }
 
-
     public boolean isHuman() { return false; }
+    public boolean isHardBot() { return false; }
+
 }

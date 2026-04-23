@@ -17,8 +17,8 @@ public class TicTacToeTest {
     public void testTwoBots() {
         ITicTacToe game = TicTacToe.getNewBuilder(playerFactory)
                 .boardSize(3)
-                .firstPlayerBot()
-                .secondPlayerBot().standardWin().build();
+                .firstPlayerEasyBot()
+                .secondPlayerEasyBot().standardWin().build();
 
         while (!game.isOver()) {
             game.pickMove();
@@ -36,8 +36,8 @@ public class TicTacToeTest {
         for (int i = 0; i < 100; i++) {
             ITicTacToe game = TicTacToe.getNewBuilder(playerFactory)
                     .boardSize(3)
-                    .firstPlayerBot()
-                    .secondPlayerBot()
+                    .firstPlayerEasyBot()
+                    .secondPlayerEasyBot()
                     .standardWin().build();
 
             while (!game.isOver()) {
@@ -103,10 +103,10 @@ public class TicTacToeTest {
 
         // Second round moves
         game.pickMove(2,2);
-        game.pickMove(1,3);
+        game.pickMove(1,0);
 
         // Third round move
-        game.pickMove(3,3);
+        game.pickMove(0,0);
 
         assertEquals("Sam", game.getWinningPlayersName());
         assertTrue(game.isOver());

@@ -7,13 +7,13 @@ import tictactoe.board.Cell;
 import static org.junit.jupiter.api.Assertions.*;
 import static tictactoe.Marker.X;
 
-public class BotPlayerTest {
+public class EasyBotPlayerTest {
     PlayerFactory playerFactory = new PlayerFactory();
 
     @Test
     public void playerMove(){
         int dimension = 3;
-        Player bot1 = playerFactory.createBot("bot1", X);
+        Player bot1 = playerFactory.createEasyBot("bot1", X);
         Board board = new Board(dimension);
 
         Cell cellSelected = bot1.move(board);

@@ -7,11 +7,11 @@ import tictactoe.board.Cell;
 import java.util.List;
 import java.util.Random;
 
-public class BotPlayer extends Player {
+public class EasyBotPlayer extends Player {
     private static final Random rand = new Random();
 
 
-    public BotPlayer(String name, Marker marker) {
+    public EasyBotPlayer(String name, Marker marker) {
         super(marker);
         this.name = name;
     }
